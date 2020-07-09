@@ -38,6 +38,21 @@ class CustomNumberPuzzleControl extends NumberPuzzleControl {
 		
 		//Your logic here		
 		
+//		emptyCellId = Integer.parseInt(buttonClicked.getLabel());
+		int clickedCellId = -1;
+		for (int i=0; i<16; i++) {
+			if (buttons[i] == buttonClicked) {
+				clickedCellId = i;
+			}
+		}
+		int diff = emptyCellId - clickedCellId;
+		if ((diff == 1) || (diff == -1) || (diff == 4) || (diff == -4))
+		{
+			swapButton(buttons[emptyCellId], buttonClicked);
+			System.out.println(clickedCellId);
+//		game.setEmptyCellId(clickedCellId);
+			emptyCellId = clickedCellId;
+		}
 		return emptyCellId;
 
 	}
@@ -45,9 +60,23 @@ class CustomNumberPuzzleControl extends NumberPuzzleControl {
 		int arr[] = new int[15];
 		
 		//Your logic here
-		int a = getRandomNumber();
-		
-		
+		int flag = 0;
+		for(int i=0; i<15; i++) {
+			flag = 0;
+			int num = (getRandomNumber()%15) + 1;
+			for(int j=0; j<15; j++) {
+				if(arr[j] == num) {
+					flag = 1;
+					break;
+				}
+			}
+			if (flag == 0) {
+				arr[i] = num;
+			}
+			else {
+				i--;
+			}
+		}
 		return arr;
 	}
 	public boolean checkForWinner(Button[] buttons)
@@ -55,8 +84,13 @@ class CustomNumberPuzzleControl extends NumberPuzzleControl {
 		boolean winner = true;
 		
 		// Your Logic here
-		getIntegerArrayOfButtonIds(buttons);
-
+		int[] arr = getIntegerArrayOfButtonIds(buttons);
+		for(int i=0; i<15; i++) {
+			if (arr[i] != i+1) {
+				return false;
+			}
+		}
+		
 		return winner;
 	}
 }
